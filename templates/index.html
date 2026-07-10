@@ -39,9 +39,14 @@ h1 {
     text-align: center;
 }
 
-.chart-container {
-	max-width: 900px;
+.chart-conatiner {
+	width: 100%;
 	margin: 0 auto;
+}
+
+.chart-container canvas {
+	width: 100% !important;
+	height: 400px !important;
 }
 </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -77,6 +82,8 @@ h1 {
 			}]
 		},
 		options: {
+			responsive: true,
+			maintainAspectRatio: false,
         plugins: {
             legend: {
                 labels: {

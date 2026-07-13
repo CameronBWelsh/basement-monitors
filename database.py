@@ -19,7 +19,7 @@ def insert_reading(temperature, humidity):
 def get_readings():
     conn = sqlite3.connect('readings.db')
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM readings")
+    cursor.execute("SELECT * FROM readings ORDER BY timestamp DESC LIMIT 144")
     readings = cursor.fetchall()
     conn.close()
-    return readings
+    return readings[::-1]

@@ -7,7 +7,10 @@ def read_dht22():
     sensor = adafruit_dht.DHT22(board.D17)
     while True:
         try:
-            return round(sensor.temperature * 1.8 + 32, 1), sensor.humidity
+            temp = round(sensor.temperature * 1.8 + 32, 1)
+            humidity = sensor.humidity
+            sensor.exit()
+            return temp, humidity
         except RuntimeError as e:
             time.sleep(2)
 

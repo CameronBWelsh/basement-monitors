@@ -23,3 +23,34 @@ def get_readings():
     readings = cursor.fetchall()
     conn.close()
     return readings[::-1]
+
+def get_stats():
+    conn = sqlite3.connect('readings.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT MAX(temperature) FROM readings WHERE timestamp >= datetime('now', '-7 days')")
+    week_high_temp = cursor.fetchone()[0]
+    cursor.execute("SELECT MIN(temperature) FROM readings WHERE timestamp >= datetime('now', '-7 days')")
+    week_low_temp = cursor.fetchone()[0]
+    cursor.execute("SELECT MAX(temperature) FROM readings WHERE timestamp >= datetime('now', '-30 days')")
+    month_high_temp = cursor.fetchone()[0]
+    cursor.execute("SELECT MIN(temperature) FROM readings WHERE timestamp >= datetime('now', '-30 days')")
+    month_low_temp = cursor.fetchone()[0]
+    cursor.execute("SELECT MAX(humidity) FROM readings WHERE timestamp >= datetime('now', '-7 days')")
+    week_high_hum = cursor.fetchone()[0]
+    cursor.execute("SELECT MIN(humidity) FROM readings WHERE timestamp >= datetime('now', '-7 days')")
+    week_low_hum = cursor.fetchone()[0]
+    cursor.execute("SELECT MAX(humidity) FROM readings WHERE timestamp >= datetime('now', '-30 days')")
+    month_high_hum = cursor.fetchone()[0]
+    cursor.execute("SELECT MIN(humidity) FROM readings WHERE timestamp >= datetime('now', '-30 days')")
+    month_low_hum = cursor.fetchone()[0]
+    conn.close()
+    return {
+    'week_high_temp': week_high_temp,
+    'week_low_temp': week_low_temp,
+    'month_high_temp': month_high_temp,
+    'month_low_temp': month_low_temp,
+    'week_high_hum': week_high_hum,
+    'week_low_hum': week_low_hum,
+    'month_high_hum': month_high_hum,
+    'month_low_hum': month_low_hum
+}

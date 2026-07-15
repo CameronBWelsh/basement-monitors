@@ -11,6 +11,10 @@ def index():
 def get_data():
     return jsonify(database.get_readings())
 
+@app.route('/api/stats')
+def get_statistics():
+    return jsonify(database.get_stats())
+
 if __name__ == '__main__':
     database.create_table()
     app.run(host='0.0.0.0', port=5000, debug=True)

@@ -14,8 +14,11 @@ while True:
 
     counter += 1
     if counter >= 60:
-        temperature, humidity = sensor.read_dht22() 
-        database.insert_reading(temperature, humidity) 
+        try:
+            temperature, humidity = sensor.read_dht22() 
+            database.insert_reading(temperature, humidity) 
+        except Exception as e:
+            print(f"Sensor error: {e}")
         counter = 0
    
     time.sleep(10)

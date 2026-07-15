@@ -46,8 +46,29 @@ h1 {
 
 .chart-container canvas {
 	width: 100% !important;
-	height: 400px !important;
+	height: 700px !important;
 }
+
+.stat-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.stat-title {
+    font-size: 0.85rem;
+    color: #a89070;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.stat-cards .card {
+    flex: 1 1 calc(50% - 10px);
+}		
+		
 </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -60,6 +81,29 @@ h1 {
 </div>
 <div class="chart-container">
 	<canvas id="chart"></canvas>
+</div>
+
+<div class="stat-cards">
+    <div class="card" id="week-temp">
+        <div class="stat-title">This Week · Temperature</div>
+        <div id="week-high-temp">High: --°F</div>
+        <div id="week-low-temp">Low: --°F</div>
+    </div>
+    <div class="card" id="month-temp">
+        <div class="stat-title">This Month · Temperature</div>
+        <div id="month-high-temp">High: --°F</div>
+        <div id="month-low-temp">Low: --°F</div>
+    </div>
+    <div class="card" id="week-hum">
+        <div class="stat-title">This Week · Humidity</div>
+        <div id="week-high-hum">High: --%</div>
+        <div id="week-low-hum">Low: --%</div>
+    </div>
+    <div class="card" id="month-hum">
+        <div class="stat-title">This Month · Humidity</div>
+        <div id="month-high-hum">High: --%</div>
+        <div id="month-low-hum">Low: --%</div>
+    </div>
 </div>
 
 <script>
@@ -123,8 +167,26 @@ h1 {
 			.catch(error => console.log(error))
 	}
 
+	function fetchStats() {
+                fetch('/api/stats')
+                        .then(response => response.json())
+                        .then(data => {
+                                document.getElementById('week-high-temp').innerText = 'High: ' + data.week_high_temp + '°F'
+				document.getElementById('week-low-temp').innerText = 'Low: ' + data.week_low_temp + '°F'   
+				document.getElementById('month-high-temp').innerText = 'High: ' + data.month_high_temp + '°F'
+				document.getElementById('month-low-temp').innerText = 'Low: ' + data.month_low_temp + '°F'
+				document.getElementById('week-high-hum').innerText = 'High: ' + data.week_high_hum + '%'
+				document.getElementById('week-low-hum').innerText = 'Low: ' + data.week_low_hum + '%'
+				document.getElementById('month-high-hum').innerText = 'High: ' + data.month_high_hum + '%'
+				document.getElementById('month-low-hum').innerText = 'Low: ' + data.month_low_hum + '%'
+			})
+			.catch(error => console.log(error))
+        }
+
 	fetchData();
 	setInterval(fetchData, 30000);
+        fetchStats();
+        setInterval(fetchStats, 30000);
 </script>
 
 </body>
